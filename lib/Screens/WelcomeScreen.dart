@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:skin_mate/Screens/signupscreen.dart';
 
 
 class WelcomeScreen extends StatelessWidget {
@@ -44,7 +45,7 @@ class WelcomeScreen extends StatelessWidget {
                     child: Container(
                         width: 70,
                         height: 90,
-                        child: Image.asset('asset/images/logo1.jpg')),
+                        child: Image.asset('assets/images/logo1.jpg')),
                   ),
                 ),
 
@@ -56,7 +57,7 @@ class WelcomeScreen extends StatelessWidget {
                 child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: 200,
-                    child: Image.asset('asset/images/logo2.png')),
+                    child: Image.asset('assets/images/logo2.png')),
               ),
             ),
             Padding(
@@ -99,8 +100,8 @@ class WelcomeScreen extends StatelessWidget {
                             ),
                             textColor: Colors.white,
                             onPressed: () {
-                              //Navigator.push(
-                               //   context, MaterialPageRoute(builder: (_) => SignupScreen()));
+                              Navigator.push(
+                                context, MaterialPageRoute(builder: (_) => SignupScreen()));
                             },
                           ),
                         ),
