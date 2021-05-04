@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  form_field_validator: ^1.0.1
   intl: ^0.16.1
   geocoding: ^1.0.5
   geolocator: ^6.1.1

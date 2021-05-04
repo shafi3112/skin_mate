@@ -82,22 +82,24 @@ class WelcomeScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(left:15.0,right: 15.0,top:50.0,bottom: 0),
                       //padding: EdgeInsets.symmetric(horizontal: 15),
                       child: ButtonTheme(
-                        minWidth: MediaQuery.of(context).size.width,
                         height: 60.0,
-                        buttonColor: Color(0xff2B404A),
                         child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: RaisedButton(
+                          width: 335.0,
+                          height: 60.0,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(28.0),
+                                  side: BorderSide(color: Color(0xFF749BAD)),
+                                ),),
+                              backgroundColor: MaterialStateProperty.all(Color(0XFF2B404A)),),
                             child: Text('SIGN UP',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15.0,
+                                color: Color(0xffFFFFFF),
                               ),),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(28.0),
-                              side: BorderSide(color: Color(0xff749BAD)),
-                            ),
-                            textColor: Color(0xffFFFFFF),
                             onPressed: () {
                               Navigator.push(
                                   context, MaterialPageRoute(builder: (_) => SignupScreen()));
@@ -111,22 +113,25 @@ class WelcomeScreen extends StatelessWidget {
                           left: 15.0, right: 15.0, top: 13.0, bottom: 0),
                       //padding: EdgeInsets.symmetric(horizontal: 15),
                       child: ButtonTheme(
-                        minWidth: MediaQuery.of(context).size.width,
                         height: 60.0,
                         buttonColor: Color(0xff749BAD),
                         child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: RaisedButton(
+                          width: 335.0,
+                          height: 60.0,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(28.0),
+                                  side: BorderSide(color: Color(0xff749BAD)),
+                                ),),
+                              backgroundColor: MaterialStateProperty.all(Color(0XFF749BAD)),),
                             child: Text('SIGN IN',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15.0,
+                                color: Color(0xffFFFFFF),
                               ),),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(28.0),
-                              side: BorderSide(color: Color(0xff749BAD)),
-                            ),
-                            textColor: Color(0xffFFFFFF),
                             onPressed: () {},
                           ),
                         ),

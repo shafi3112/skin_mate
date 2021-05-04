@@ -1,3 +1,4 @@
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:skin_mate/models/OtpScreens/OtpMainScreen.dart';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool _passwordVisible = true;
   int OTP= 230346;
   TextEditingController _myController1 = TextEditingController();
@@ -31,6 +33,17 @@ class _SignupScreenState extends State<SignupScreen> {
     _myController4.addListener(() {
       setState(() {}); // setState every time text changes
     });
+  }
+  String validateMobile(String value) {
+    String patttern = r'^(?:[+0]9)?[0-9]{10}$';
+    RegExp regExp = new RegExp(patttern);
+    if (value.length == 0) {
+      return 'Please Enter Phone Number';
+    }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please Enter a valid Phone Number';
+    }
+    return null;
   }
 
   /*@override
@@ -66,6 +79,8 @@ class _SignupScreenState extends State<SignupScreen> {
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(10.0, 25.0, 10.0, 0.0),
         child: Form(
+          autovalidateMode: AutovalidateMode.always,
+          key: formkey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -79,11 +94,13 @@ class _SignupScreenState extends State<SignupScreen> {
               SizedBox(height: 05.0),
               Container(
                 width: 335.0,
-                height: 44.0,
+                //height: 44.0,
                 child: TextFormField(
                   controller: _myController1,
                   keyboardType: TextInputType.phone,
+                  validator: validateMobile,
                   decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                     border: OutlineInputBorder(),
                     hintText: 'Enter Number',
                     hintStyle: TextStyle(
@@ -103,10 +120,15 @@ class _SignupScreenState extends State<SignupScreen> {
               SizedBox(height: 05.0),
               Container(
                 width: 335.0,
-                height: 44.0,
+                //height: 44.0,
                 child: TextFormField(
                     controller: _myController2,
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: "* Required"),
+                      EmailValidator(errorText: "Enter valid email id"),
+                    ]),
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                       border: OutlineInputBorder(),
                       hintText: 'Enter Email',
                       hintStyle: TextStyle(
@@ -129,11 +151,20 @@ class _SignupScreenState extends State<SignupScreen> {
               SizedBox(height: 05.0),
               Container(
                 width: 335.0,
-                height: 44.0,
+                //height: 44.0,
                 child: TextFormField(
                     obscureText: !_passwordVisible,
                     controller: _myController3,
+                    validator: MultiValidator([
+                      RequiredValidator(errorText: "* Required"),
+                      MinLengthValidator(6,
+                          errorText: "Password should be atleast 6 characters"),
+                      MaxLengthValidator(15,
+                          errorText:
+                          "Password should not be greater than 15 characters")
+                    ]),
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                       border: OutlineInputBorder(),
                       hintText: 'Enter Password',
                       hintStyle: TextStyle(
@@ -169,7 +200,7 @@ class _SignupScreenState extends State<SignupScreen> {
               SizedBox(height: 05.0),
               Container(
                 width: 335.0,
-                height: 44.0,
+                //height: 44.0,
                 child: TextFormField(
                     obscureText: !_passwordVisible,
                     controller: _myController4,
@@ -179,6 +210,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       }
                     },
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                       border: OutlineInputBorder(),
                       hintText: 'Confirm Password',
                       hintStyle: TextStyle(
@@ -211,31 +243,28 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Container(
                     width: 335.0,
                     height: 50.0,
-                    child: RaisedButton(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (formkey.currentState.validate()) {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => OtpMainscreen()));
+                        }
+                        else
+                          return 'Not Validated';
+                      },
+                      style: ElevatedButton.styleFrom(
+                          primary: _myController1.text.isEmpty ||
+                              _myController2.text.isEmpty ||
+                              _myController3.text.isEmpty ||
+                              _myController4.text.isEmpty
+                              ? Colors.blueGrey[100]
+                              : Color(0xff749BAD),
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)),
                         child: Text('PROCEED',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15.0,
+                            color: Color(0xffFFFFFF),
                           ),),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0),
-                        ),
-                        textColor: Color(0xffFFFFFF),
-                        onPressed: () {
-                          if (_myController1.text.isEmpty || _myController2.text
-                              .isEmpty || _myController3.text.isEmpty ||
-                              _myController4.text.isEmpty)
-                            print("please fill all the fields");
-                          else {
-                            Navigator.push(context, MaterialPageRoute(builder: (_) => OtpMainscreen()));
-                          }
-                        },
-                        color: (_myController1.text.isEmpty ||
-                            _myController2.text.isEmpty ||
-                            _myController3.text.isEmpty ||
-                            _myController4.text.isEmpty)
-                            ? Colors.blueGrey[100]
-                            : Color(0xff749BAD)
                     ),
                   ),
                 ),

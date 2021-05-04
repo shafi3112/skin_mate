@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,6 +10,7 @@ class SetProfile extends StatefulWidget {
 }
 
 class _SetProfileState extends State<SetProfile> {
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
   List<Gender> genders = new List<Gender>();
   DateTime _selectedDate;
   Position _currentPosition;
@@ -55,6 +55,17 @@ class _SetProfileState extends State<SetProfile> {
       setState(() {}); // setState every time text changes
     });
   }
+  String validateMobile(String value) {
+    String patttern = r'^(?:[+0]9)?[0-9]{10}$';
+    RegExp regExp = new RegExp(patttern);
+    if (value.length == 0) {
+      return 'Please Enter Phone Number';
+    }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please Enter a Valid Phone Number';
+    }
+    return null;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,6 +90,8 @@ class _SetProfileState extends State<SetProfile> {
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(10.0, 25.0, 10.0, 0.0),
         child: Form(
+          autovalidateMode: AutovalidateMode.always,
+          key: formkey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -232,7 +245,6 @@ class _SetProfileState extends State<SetProfile> {
                             _myController4.text = data;
                           });
                         },
-
                       )
                   ),
                 ),
@@ -352,10 +364,12 @@ class _SetProfileState extends State<SetProfile> {
               SizedBox(height: 05.0),
               Container(
                 width: 335.0,
-                height: 44.0,
+                //height: 44.0,
                 child: TextFormField(
                   controller: _myController8,
+                  validator: validateMobile,
                   decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xffCCD0D5)),
                     ),
@@ -432,35 +446,33 @@ class _SetProfileState extends State<SetProfile> {
                 child: Container(
                   width: 335.0,
                   height: 50.0,
-                  child: RaisedButton(
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (_myController1=='' || _myController2==''|| _myController3=='' ||
+                            _myController4==''|| _myController5=='' || _myController6==''||
+                            _myController7=='' || _myController8=='' || Genderselected ==false)
+                          return 'Fill all fields';
+                        else if(formkey.currentState.validate()) {
+                          //Navigator.push(context, MaterialPageRoute(builder: (_) => OtpMainscreen()));
+                        };
+                      },
                       child: Text('CREATE MY ACCOUNT',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15.0,
+                          color: Color(0xffFFFFFF),
                         ),),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0),
-                      ),
-                      textColor: Color(0xffFFFFFF),
-                      onPressed: () {
-                        if (_myController1.text.isEmpty || _myController2.text
-                            .isEmpty || _myController3.text.isEmpty ||
-                            _myController4.text.isEmpty || _myController5.text.isEmpty || _myController6.text
-                            .isEmpty || _myController7.text.isEmpty ||
-                            _myController8.text.isEmpty || Genderselected ==false)
-                          print("please fill all the fields");
-                        else {}
-                      },
-                      color: _myController1.text.isEmpty || _myController2.text
-                          .isEmpty || _myController3.text.isEmpty ||
-                          _myController4.text.isEmpty || _myController5.text.isEmpty || _myController6.text
-                          .isEmpty || _myController7.text.isEmpty ||
-                          _myController8.text.isEmpty || Genderselected ==false
-                          ? Colors.blueGrey[100]
-                          : Color(0xff749BAD)
+                      style: ElevatedButton.styleFrom(
+                          primary:_myController1=='' || _myController2==''|| _myController3=='' ||
+                              _myController4==''|| _myController5=='' || _myController6==''||
+                              _myController7=='' || _myController8=='' || Genderselected ==false
+                              ? Colors.blueGrey[100]
+                              : Color(0xff749BAD),
+                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)),
                   ),
                 ),
               ),
+              SizedBox(height: 30.0),
             ],
           ),
         ),
