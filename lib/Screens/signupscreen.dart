@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:skin_mate/models/OtpScreens/OtpMainScreen.dart';
+
+import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -45,30 +45,13 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: Container(
-          child: Center(
-            child: SizedBox(
-              width: 35.0,
-              height: 48.0,
-              child: DecoratedBox(
-                child: Column(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back_ios, color: Color(0xff02122C)),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Color(0xff02122C)
-                  ),
-                ),
-              ),
-            ),
-          ),
+          height: 20.0,
+          width: 20.0,
+          child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: Image.asset('assets/Profile_Images/arrow_back.png')),
         ),
         title: Text("Sign Up",
           style: TextStyle(
@@ -103,6 +86,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter Number',
+                    hintStyle: TextStyle(
+                      color: Color(0xff02122C),
+                      fontSize: 12.0,
+                    ),
                   ),
                 ),
               ),
@@ -122,6 +109,10 @@ class _SignupScreenState extends State<SignupScreen> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter Email',
+                      hintStyle: TextStyle(
+                        color: Color(0xff02122C),
+                        fontSize: 12.0,
+                      ),
                     ),
                     onChanged: (val) {
                       // setState(() => email = val);
@@ -145,6 +136,10 @@ class _SignupScreenState extends State<SignupScreen> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter Password',
+                      hintStyle: TextStyle(
+                        color: Color(0xff02122C),
+                        fontSize: 12.0,
+                      ),
                       suffixIcon:
                       IconButton(
                           icon: Icon(
@@ -186,6 +181,10 @@ class _SignupScreenState extends State<SignupScreen> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Confirm Password',
+                      hintStyle: TextStyle(
+                        color: Color(0xff02122C),
+                        fontSize: 12.0,
+                      ),
                       suffixIcon:
                       IconButton(
                           icon: Icon(
@@ -228,11 +227,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               _myController4.text.isEmpty)
                             print("please fill all the fields");
                           else {
-                            SchedulerBinding.instance.addPostFrameCallback((_) {
-                              Navigator.push(
-                                  context, MaterialPageRoute(
-                                  builder: (_) => OtpMainscreen()));
-                            });
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => OtpMainscreen()));
                           }
                         },
                         color: (_myController1.text.isEmpty ||
@@ -271,8 +266,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         color: Color(0xff749BAD)),),
                   GestureDetector(
                     onTap: () {
-                      /*Navigator.push(
-                          context, MaterialPageRoute(builder: (_) => SignInPage())); *///navigate to sigin page
+                      //Navigator.push(
+                          //context, MaterialPageRoute(builder: (_) => SignInPage())); //navigate to sigin page
                     },
                     child: Text(" Sign In", style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -300,7 +295,6 @@ class _SignupScreenState extends State<SignupScreen> {
             ],
           ),
         ),
-
       ),
     );
   }

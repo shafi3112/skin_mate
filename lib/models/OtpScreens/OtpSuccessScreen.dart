@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:skin_mate/ProfileSetupScreens/SetProfile.dart';
 
 class OtpScreen extends StatefulWidget {
   @override
@@ -93,8 +94,8 @@ class _OtpScreenState extends State<OtpScreen> {
                         ),
                         child: GestureDetector(
                           onTap: () {
-                            //Navigator.push(
-                                //context, MaterialPageRoute(builder: (_) => SetProfile()));
+                            Navigator.push(
+                                context, MaterialPageRoute(builder: (_) => SetProfile()));
                           },
                           child: Text("OKAY",
                             style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.bold,),

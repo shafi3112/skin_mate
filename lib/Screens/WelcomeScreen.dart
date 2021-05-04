@@ -1,13 +1,14 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:skin_mate/Screens/signupscreen.dart';
 
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffFFFFFF),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -20,8 +21,9 @@ class WelcomeScreen extends StatelessWidget {
                     child: Text("Welcome to",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0,
+                          color: Color(0xff2A3E49)
                       ),)),
               ),
             ),
@@ -36,7 +38,7 @@ class WelcomeScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 28.0,
+                          fontSize: 25.0,
                         ),)),
                 ),
                 Padding(
@@ -66,16 +68,13 @@ class WelcomeScreen extends StatelessWidget {
               child: Container(
                 constraints: BoxConstraints.expand(
                     width: MediaQuery.of(context).size.width,
-                    //height: MediaQuery.of(context).size.width,
                     height: 300.0
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.blueGrey[800],
+                  color: Color(0xff2B404A),
                   borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(40.0),
-                      bottomRight: Radius.circular(0.0),
-                      topLeft: Radius.circular(40.0),
-                      bottomLeft: Radius.circular(0.0)),
+                    topRight: Radius.circular(40.0),
+                    topLeft: Radius.circular(40.0),),
                 ),
                 child: Column(
                   children: [
@@ -85,23 +84,23 @@ class WelcomeScreen extends StatelessWidget {
                       child: ButtonTheme(
                         minWidth: MediaQuery.of(context).size.width,
                         height: 60.0,
-                        buttonColor: Colors.blueGrey[800],
+                        buttonColor: Color(0xff2B404A),
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           child: RaisedButton(
                             child: Text('SIGN UP',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18.0,
+                                fontSize: 15.0,
                               ),),
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(28.0),
-                              side: BorderSide(color: Colors.blue.shade100),
+                              side: BorderSide(color: Color(0xff749BAD)),
                             ),
-                            textColor: Colors.white,
+                            textColor: Color(0xffFFFFFF),
                             onPressed: () {
                               Navigator.push(
-                                context, MaterialPageRoute(builder: (_) => SignupScreen()));
+                                  context, MaterialPageRoute(builder: (_) => SignupScreen()));
                             },
                           ),
                         ),
@@ -114,36 +113,33 @@ class WelcomeScreen extends StatelessWidget {
                       child: ButtonTheme(
                         minWidth: MediaQuery.of(context).size.width,
                         height: 60.0,
-                        buttonColor: Colors.blueGrey[400],
+                        buttonColor: Color(0xff749BAD),
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           child: RaisedButton(
                             child: Text('SIGN IN',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18.0,
+                                fontSize: 15.0,
                               ),),
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(28.0),
-                              side: BorderSide(color: Colors.blueGrey[500]),
+                              side: BorderSide(color: Color(0xff749BAD)),
                             ),
-                            textColor: Colors.white,
-                            onPressed: () {
-                              //Navigator.push(
-                                 // context, MaterialPageRoute(builder: (_) => SignInPage()));
-                            },
+                            textColor: Color(0xffFFFFFF),
+                            onPressed: () {},
                           ),
                         ),
                       ),
                     ),
                     SizedBox(
                       height: 70,
-                    ),
+                    ), //navigate to sigin pag
                     Text('Privacy Policy . Terms and Conditions',
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 15.0,
-                          color: Colors.blueGrey
+                          fontSize: 10.0,
+                          color: Color(0xff749BAD)
                       ),)
                   ],
                 ),
@@ -155,4 +151,3 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 }
-// this is feature branch
