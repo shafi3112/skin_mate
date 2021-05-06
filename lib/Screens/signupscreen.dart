@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skin_mate/models/OtpScreens/OtpMainScreen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -12,8 +13,11 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool _passwordVisible = true;
+  String Phonenum;
+  String emailll;
+  String pasword;
   var code;
-  int OTP= 230346;
+  int OTP = 230346;
   TextEditingController _phone = TextEditingController();
   TextEditingController _emaill = TextEditingController();
   TextEditingController _password = TextEditingController();
@@ -22,12 +26,22 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   void initState() {
     super.initState();
+    getSignupValues();
     _passwordVisible = true;
-    _phone.addListener(() {setState(() {}); });
-    _emaill.addListener(() {setState(() {});});
-    _password.addListener(() {setState(() {});});
-    _confirmpass.addListener(() {setState(() {});});
+    _phone.addListener(() {
+      setState(() {});
+    });
+    _emaill.addListener(() {
+      setState(() {});
+    });
+    _password.addListener(() {
+      setState(() {});
+    });
+    _confirmpass.addListener(() {
+      setState(() {});
+    });
   }
+
   String validateMobile(String value) {
     String patttern = r'^(?:[+0]9)?[0-9]{10}$';
     RegExp regExp = new RegExp(patttern);
@@ -241,6 +255,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       onPressed: () {
                         if (formkey.currentState.validate()) {
                           DuplicateChecker();
+                          SavephoneNuM();
+                          getSignupValues();
+
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -250,13 +267,14 @@ class _SignupScreenState extends State<SignupScreen> {
                               _confirmpass.text.isEmpty
                               ? Colors.blueGrey[100]
                               : Color(0xff749BAD),
-                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)),
-                        child: Text('PROCEED',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.0,
-                            color: Color(0xffFFFFFF),
-                          ),),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0),)),
+                      child: Text('PROCEED',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15.0,
+                          color: Color(0xffFFFFFF),
+                        ),),
                     ),
                   ),
                 ),
@@ -288,7 +306,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   GestureDetector(
                     onTap: () {
                       //Navigator.push(
-                          //context, MaterialPageRoute(builder: (_) => SignInPage())); //navigate to sigin page
+                      //context, MaterialPageRoute(builder: (_) => SignInPage())); //navigate to sigin page
                     },
                     child: Text(" Sign In", style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -319,17 +337,17 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
   }
-  Future DuplicateChecker() async{
-    var APIURL=Uri.parse("http://65.0.55.180/skinmate/v1.0/customer/duplicate-checker");
-    Map mapeddata ={
-      'phoneNumber' :  _phone.text,
-      'email' : _emaill.text,
+
+  Future DuplicateChecker() async {
+    var APIURL = Uri.parse("http://65.0.55.180/skinmate/v1.0/customer/duplicate-checker");
+    Map mapeddata = {
+      'phoneNumber': _phone.text,
+      'email': _emaill.text,
     };
-    http.Response response= await http.post(APIURL,body:mapeddata);
-    var data =jsonDecode(response.body);
-    var code=(data[0]['Code']);
-    if(code==205)
-    {
+    http.Response response = await http.post(APIURL, body: mapeddata);
+    var data = jsonDecode(response.body);
+    var code = (data[0]['Code']);
+    if (code == 205) {
       final snackBar = SnackBar(
         content: Text('Mobile Number or Email is Already Registered'),
       );
@@ -338,5 +356,20 @@ class _SignupScreenState extends State<SignupScreen> {
     else {
       return OtpScreen(context);
     }
-    }
+  }
+  getSignupValues() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+      Phonenum = prefs.getString('PhoneNumber') ?? '';
+      emailll = prefs.getString('email') ?? '';
+      pasword = prefs.getString('password') ?? '';
+  }
+  SavephoneNuM() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+      Phonenum = _phone.text;
+      emailll = _emaill.text;
+      pasword = _password.text;
+    prefs.setString('PhoneNumber', Phonenum);
+    prefs.setString('email', emailll);
+    prefs.setString('password', pasword);
+  }
 }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:skin_mate/Screens/WelcomeScreen.dart';
 
-void main() {
-  runApp(MyApp());
-}
+
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override

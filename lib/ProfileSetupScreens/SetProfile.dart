@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skin_mate/ProfileSetupScreens/Gender.dart';
+import 'package:http/http.dart' as http;
 
 class SetProfile extends StatefulWidget {
   @override
@@ -15,45 +18,56 @@ class _SetProfileState extends State<SetProfile> {
   DateTime _selectedDate;
   Position _currentPosition;
   String _currentAddress;
+  String Phonenum;
+  String emailll;
+  String pasword;
   bool Genderselected= false;
-  TextEditingController _myController1 = TextEditingController();
-  TextEditingController _myController2 = TextEditingController();
-  TextEditingController _myController3 = TextEditingController();
-  TextEditingController _myController4 = TextEditingController();
-  TextEditingController _myController5 = TextEditingController();
-  TextEditingController _myController6 = TextEditingController();
-  TextEditingController _myController7 = TextEditingController();
-  TextEditingController _myController8 = TextEditingController();
+  var gender;
+  TextEditingController _firstName = TextEditingController();
+  TextEditingController _lastName = TextEditingController();
+  TextEditingController _dob = TextEditingController();
+  TextEditingController _bloodGroup = TextEditingController();
+  TextEditingController _location = TextEditingController();
+  TextEditingController _insurance = TextEditingController();
+  TextEditingController _emergencyName = TextEditingController();
+  TextEditingController _emergencyNum = TextEditingController();
   @override
   void initState() {
     super.initState();
+    getSignupValues();
     genders.add(new Gender("Male",'assets/Profile_Images/male.png' , false));
     genders.add(new Gender("Female",'assets/Profile_Images/female.png' , false));
     genders.add(new Gender("Others",'assets/Profile_Images/other.png' , false));
-    _myController1.addListener(() {
+    _firstName.addListener(() {
       setState(() {}); // setState every time text changes
     });
-    _myController2.addListener(() {
+    _lastName.addListener(() {
       setState(() {}); // setState every time text changes
     });
-    _myController3.addListener(() {
+    _dob.addListener(() {
       setState(() {}); // setState every time text changes
     });
-    _myController4.addListener(() {
+    _bloodGroup.addListener(() {
       setState(() {}); // setState every time text changes
     });
-    _myController5.addListener(() {
+    _location.addListener(() {
       setState(() {}); // setState every time text changes
     });
-    _myController6.addListener(() {
+    _insurance.addListener(() {
       setState(() {}); // setState every time text changes
     });
-    _myController7.addListener(() {
+    _emergencyName.addListener(() {
       setState(() {}); // setState every time text changes
     });
-    _myController8.addListener(() {
+    _emergencyNum.addListener(() {
       setState(() {}); // setState every time text changes
     });
+  }
+  getSignupValues() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+      Phonenum = prefs.getString('PhoneNumber') ?? '';
+      emailll = prefs.getString('email') ?? '';
+      pasword = prefs.getString('password') ?? '';
   }
   String validateMobile(String value) {
     String patttern = r'^(?:[+0]9)?[0-9]{10}$';
@@ -107,7 +121,7 @@ class _SetProfileState extends State<SetProfile> {
                 width: 335.0,
                 height: 44.0,
                 child: TextFormField(
-                  controller: _myController1,
+                  controller: _firstName,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xffCCD0D5)),
@@ -132,7 +146,7 @@ class _SetProfileState extends State<SetProfile> {
                 width: 335.0,
                 height: 44.0,
                 child: TextFormField(
-                  controller: _myController2,
+                  controller: _lastName,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xffCCD0D5)),
@@ -167,6 +181,7 @@ class _SetProfileState extends State<SetProfile> {
                             genders.forEach((gender) => gender.isSelected = false);
                             genders[index].isSelected = true;
                             Genderselected= true;
+                            gender= genders[index].name;
                           });
                         },
                         child: CustomRadio(genders[index]),
@@ -185,7 +200,7 @@ class _SetProfileState extends State<SetProfile> {
                 width: 335.0,
                 height: 44.0,
                 child: TextFormField(
-                  controller: _myController3,
+                  controller: _dob,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xffCCD0D5)),
@@ -220,7 +235,7 @@ class _SetProfileState extends State<SetProfile> {
                 width: 335.0,
                 height: 44.0,
                 child: TextFormField(
-                  controller: _myController4,
+                  controller: _bloodGroup,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xffCCD0D5)),
@@ -242,7 +257,7 @@ class _SetProfileState extends State<SetProfile> {
                         }).toList(),
                         onChanged: (String data) {
                           setState(() {
-                            _myController4.text = data;
+                            _bloodGroup.text = data;
                           });
                         },
                       )
@@ -266,7 +281,7 @@ class _SetProfileState extends State<SetProfile> {
                             _getCurrentLocation();
                             setState(() {
                               if (_currentAddress != null) {
-                                _myController5.text= (_currentAddress);
+                                _location.text= (_currentAddress);
                               }
                             });
                           }),
@@ -291,7 +306,7 @@ class _SetProfileState extends State<SetProfile> {
                 width: 335.0,
                 height: 44.0,
                 child: TextFormField(
-                  controller: _myController5,
+                  controller: _location,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xffCCD0D5)),
@@ -316,7 +331,7 @@ class _SetProfileState extends State<SetProfile> {
                 width: 335.0,
                 height: 44.0,
                 child: TextFormField(
-                  controller: _myController6,
+                  controller: _insurance,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xffCCD0D5)),
@@ -341,7 +356,7 @@ class _SetProfileState extends State<SetProfile> {
                 width: 335.0,
                 height: 44.0,
                 child: TextFormField(
-                  controller: _myController7,
+                  controller: _emergencyName,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xffCCD0D5)),
@@ -366,7 +381,7 @@ class _SetProfileState extends State<SetProfile> {
                 width: 335.0,
                 //height: 44.0,
                 child: TextFormField(
-                  controller: _myController8,
+                  controller: _emergencyNum,
                   validator: validateMobile,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -448,12 +463,14 @@ class _SetProfileState extends State<SetProfile> {
                   height: 50.0,
                   child: ElevatedButton(
                       onPressed: () {
-                        if (_myController1=='' || _myController2==''|| _myController3=='' ||
-                            _myController4==''|| _myController5=='' || _myController6==''||
-                            _myController7=='' || _myController8=='' || Genderselected ==false)
+                        if (_firstName.text.isEmpty || _lastName.text.isEmpty||
+                            _dob.text.isEmpty|| _bloodGroup.text.isEmpty||
+                            _location.text.isEmpty || _insurance.text.isEmpty||
+                            _emergencyName.text.isEmpty|| _emergencyNum.text.isEmpty ||
+                            Genderselected ==false)
                           return 'Fill all fields';
                         else if(formkey.currentState.validate()) {
-                          //Navigator.push(context, MaterialPageRoute(builder: (_) => OtpMainscreen()));
+                          registerUser();
                         };
                       },
                       child: Text('CREATE MY ACCOUNT',
@@ -463,9 +480,11 @@ class _SetProfileState extends State<SetProfile> {
                           color: Color(0xffFFFFFF),
                         ),),
                       style: ElevatedButton.styleFrom(
-                          primary:_myController1=='' || _myController2==''|| _myController3=='' ||
-                              _myController4==''|| _myController5=='' || _myController6==''||
-                              _myController7=='' || _myController8=='' || Genderselected ==false
+                          primary:(_firstName.text.isEmpty || _lastName.text.isEmpty||
+                              _dob.text.isEmpty|| _bloodGroup.text.isEmpty||
+                              _location.text.isEmpty || _insurance.text.isEmpty||
+                              _emergencyName.text.isEmpty|| _emergencyNum.text.isEmpty ||
+                              Genderselected ==false)
                               ? Colors.blueGrey[100]
                               : Color(0xff749BAD),
                           shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)),
@@ -492,19 +511,19 @@ class _SetProfileState extends State<SetProfile> {
                 primary: Colors.deepPurple,
                 onPrimary: Colors.white,
                 surface: Colors.blueGrey,
-                onSurface: Colors.yellow,
+                onSurface: Colors.red,
               ),
-              dialogBackgroundColor: Colors.blue[500],
+              dialogBackgroundColor: Colors.white,
             ),
             child: child,
           );
         });
     if (newSelectedDate != null) {
       _selectedDate = newSelectedDate;
-      _myController3
+      _dob
         ..text = DateFormat('dd-MM-yyyy').format(_selectedDate)
         ..selection = TextSelection.fromPosition(TextPosition(
-            offset: _myController3.text.length,
+            offset: _dob.text.length,
             affinity: TextAffinity.upstream));
     }
 
@@ -535,6 +554,38 @@ class _SetProfileState extends State<SetProfile> {
       });
     } catch (e) {
       print(e);
+    }
+  }
+  Future registerUser() async {
+    var APIURL = Uri.parse("http://65.0.55.180/skinmate/v1.0/customer/registration");
+    Map mapeddata = {
+      'phoneNumber': Phonenum,
+      'email': emailll,
+      "firstName": _firstName.text,
+      "lastName": _lastName.text,
+      "gender": gender,
+      "dob": _dob.text,
+      "bloodGroup": _bloodGroup.text,
+      "loginType": "Flutter",
+      "password": pasword,
+      "address": _location.text,
+      "emergency Number": _emergencyNum.text,
+      "insuranceInformation": _insurance.text,
+      "emeregencyContactName": _emergencyName.text
+
+    };
+    http.Response response = await http.post(APIURL, body: mapeddata);
+    var data = jsonDecode(response.body);
+    var code = (data[0]['Code']);
+    print("code is:"+code);
+    if (code == 200) {
+      //Navigator.push(context, MaterialPageRoute(builder: (_) => SignupScreen()));
+    }
+    else {
+      final snackBar = SnackBar(
+        content: Text("Please Enter Valid Details"),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 }
