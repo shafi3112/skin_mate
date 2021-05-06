@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:skin_mate/models/OtpScreens/OtpMainScreen.dart';
-
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:skin_mate/models/OtpScreens/OtpMainScreen.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -11,28 +12,21 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool _passwordVisible = true;
+  var code;
   int OTP= 230346;
-  TextEditingController _myController1 = TextEditingController();
-  TextEditingController _myController2 = TextEditingController();
-  TextEditingController _myController3 = TextEditingController();
-  TextEditingController _myController4 = TextEditingController();
+  TextEditingController _phone = TextEditingController();
+  TextEditingController _emaill = TextEditingController();
+  TextEditingController _password = TextEditingController();
+  TextEditingController _confirmpass = TextEditingController();
 
   @override
   void initState() {
-    _passwordVisible = true;
     super.initState();
-    _myController1.addListener(() {
-      setState(() {}); // setState every time text changes
-    });
-    _myController2.addListener(() {
-      setState(() {}); // setState every time text changes
-    });
-    _myController3.addListener(() {
-      setState(() {}); // setState every time text changes
-    });
-    _myController4.addListener(() {
-      setState(() {}); // setState every time text changes
-    });
+    _passwordVisible = true;
+    _phone.addListener(() {setState(() {}); });
+    _emaill.addListener(() {setState(() {});});
+    _password.addListener(() {setState(() {});});
+    _confirmpass.addListener(() {setState(() {});});
   }
   String validateMobile(String value) {
     String patttern = r'^(?:[+0]9)?[0-9]{10}$';
@@ -48,10 +42,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
   /*@override
   void dispose() {
-    _myController1.dispose();
-    _myController2.dispose();
-    _myController3.dispose();
-    _myController4.dispose();
+    _phone.dispose();
+    _emaill.dispose();
+    _password.dispose();
+    _confirmpass.dispose();
     super.dispose();
   }*/
 
@@ -96,7 +90,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 width: 335.0,
                 //height: 44.0,
                 child: TextFormField(
-                  controller: _myController1,
+                  controller: _phone,
                   keyboardType: TextInputType.phone,
                   validator: validateMobile,
                   decoration: InputDecoration(
@@ -122,7 +116,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 width: 335.0,
                 //height: 44.0,
                 child: TextFormField(
-                    controller: _myController2,
+                    controller: _emaill,
                     validator: MultiValidator([
                       RequiredValidator(errorText: "* Required"),
                       EmailValidator(errorText: "Enter valid email id"),
@@ -154,7 +148,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 //height: 44.0,
                 child: TextFormField(
                     obscureText: !_passwordVisible,
-                    controller: _myController3,
+                    controller: _password,
                     validator: MultiValidator([
                       RequiredValidator(errorText: "* Required"),
                       MinLengthValidator(6,
@@ -203,9 +197,9 @@ class _SignupScreenState extends State<SignupScreen> {
                 //height: 44.0,
                 child: TextFormField(
                     obscureText: !_passwordVisible,
-                    controller: _myController4,
+                    controller: _confirmpass,
                     validator: (value) {
-                      if (value != _myController3.text) {
+                      if (value != _password.text) {
                         return 'Password is not matching';
                       }
                     },
@@ -246,16 +240,14 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (formkey.currentState.validate()) {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => OtpMainscreen()));
+                          DuplicateChecker();
                         }
-                        else
-                          return 'Not Validated';
                       },
                       style: ElevatedButton.styleFrom(
-                          primary: _myController1.text.isEmpty ||
-                              _myController2.text.isEmpty ||
-                              _myController3.text.isEmpty ||
-                              _myController4.text.isEmpty
+                          primary: _phone.text.isEmpty ||
+                              _emaill.text.isEmpty ||
+                              _password.text.isEmpty ||
+                              _confirmpass.text.isEmpty
                               ? Colors.blueGrey[100]
                               : Color(0xff749BAD),
                       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0),)),
@@ -327,4 +319,24 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
   }
+  Future DuplicateChecker() async{
+    var APIURL=Uri.parse("http://65.0.55.180/skinmate/v1.0/customer/duplicate-checker");
+    Map mapeddata ={
+      'phoneNumber' :  _phone.text,
+      'email' : _emaill.text,
+    };
+    http.Response response= await http.post(APIURL,body:mapeddata);
+    var data =jsonDecode(response.body);
+    var code=(data[0]['Code']);
+    if(code==205)
+    {
+      final snackBar = SnackBar(
+        content: Text('Mobile Number or Email is Already Registered'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    else {
+      return OtpScreen(context);
+    }
+    }
 }

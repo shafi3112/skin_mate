@@ -1,23 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:skin_mate/models/OtpScreens/OtpMainScreen.dart';
 
-class OtpErrorscreen extends StatefulWidget {
-  @override
-  _OtpErrorscreenState createState() => _OtpErrorscreenState();
-}
-
-class _OtpErrorscreenState extends State<OtpErrorscreen> {
-  @override
-  Widget build(context) {
-    return Scaffold(
-        body: openErrorAlert(context)
-    );
-  }
-
-  Widget openErrorAlert(BuildContext context) {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Navigator.pop(context);
+Widget openErrorAlert(BuildContext context) {
+  Navigator.pop(context);
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -94,9 +79,8 @@ class _OtpErrorscreenState extends State<OtpErrorscreen> {
                         child: GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
-                            Navigator.push(
-                                context, MaterialPageRoute(builder: (_) => OtpMainscreen()));
-                          }, //navigate to sigin page
+                            OtpScreen(context);
+                          },
                           child: Text("RETRY",
                             style: TextStyle(color: Color(0xffFFFFFF),fontWeight: FontWeight.bold,),
                             textAlign: TextAlign.center,
@@ -109,6 +93,4 @@ class _OtpErrorscreenState extends State<OtpErrorscreen> {
               ),
             );
           });
-    });
-  }
 }

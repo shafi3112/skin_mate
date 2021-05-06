@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:skin_mate/models/OtpScreens/OtpErrorScreen.dart';
 import 'dart:convert';
-import 'package:skin_mate/models/OtpScreens/OtpSuccessScreen.dart';
 
 TextEditingController _otp = TextEditingController();
-Widget OtpScreen(BuildContext context) {
+Widget bottomscreen(BuildContext context) {
   showModalBottomSheet(
     useRootNavigator: true,
     context: context,
@@ -140,7 +138,7 @@ Widget OtpScreen(BuildContext context) {
                             ),
                           ),
                           onPressed: () {
-                            OtpChecker(context);
+                            OtpChecker();
                           },
                         ),
                       ),
@@ -169,19 +167,18 @@ Row buildTimer() {
     ],
   );
 }
-Future OtpChecker(BuildContext context) async {
+Future OtpChecker() async {
   var APIURL = Uri.parse(
       "http://65.0.55.180/skinmate/v1.0/customer/mobile-otp-verify");
   Map mapeddata = {
     'otp': _otp.text,
   };
+  print("JSON DATA: ${mapeddata}");
   http.Response response = await http.post(APIURL, body: mapeddata);
   var data = jsonDecode(response.body);
+  print("DATA:${data}");
   var code = (data[0]['Code']);
-  if (code == 200)
-    return SuccessAlert(context);
-  else
-    return openErrorAlert(context);
+  if (code == 200) {}
 }
 
 
