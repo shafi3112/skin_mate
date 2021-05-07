@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skin_mate/ProfileSetupScreens/Gender.dart';
 import 'package:http/http.dart' as http;
+import 'package:skin_mate/Screens/WelcomeScreen.dart';
 
 class SetProfile extends StatefulWidget {
   @override
@@ -23,6 +24,8 @@ class _SetProfileState extends State<SetProfile> {
   String pasword;
   bool Genderselected= false;
   var gender;
+  var flutter;
+  var code;
   TextEditingController _firstName = TextEditingController();
   TextEditingController _lastName = TextEditingController();
   TextEditingController _dob = TextEditingController();
@@ -462,13 +465,18 @@ class _SetProfileState extends State<SetProfile> {
                   width: 335.0,
                   height: 50.0,
                   child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_firstName.text.isEmpty || _lastName.text.isEmpty||
                             _dob.text.isEmpty|| _bloodGroup.text.isEmpty||
                             _location.text.isEmpty || _insurance.text.isEmpty||
                             _emergencyName.text.isEmpty|| _emergencyNum.text.isEmpty ||
                             Genderselected ==false)
-                          return 'Fill all fields';
+                          {
+                            final snackBar = SnackBar(
+                              content: Text("Please Fill all the Details"),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
                         else if(formkey.currentState.validate()) {
                           registerUser();
                         };
@@ -521,7 +529,7 @@ class _SetProfileState extends State<SetProfile> {
     if (newSelectedDate != null) {
       _selectedDate = newSelectedDate;
       _dob
-        ..text = DateFormat('dd-MM-yyyy').format(_selectedDate)
+          ..text = DateFormat('yyyy-MM-dd').format(_selectedDate)
         ..selection = TextSelection.fromPosition(TextPosition(
             offset: _dob.text.length,
             affinity: TextAffinity.upstream));
@@ -558,35 +566,30 @@ class _SetProfileState extends State<SetProfile> {
   }
   Future registerUser() async {
     var APIURL = Uri.parse("http://65.0.55.180/skinmate/v1.0/customer/registration");
+    flutter= "Flutter";
     Map mapeddata = {
       'phoneNumber': Phonenum,
       'email': emailll,
-      "firstName": _firstName.text,
-      "lastName": _lastName.text,
-      "gender": gender,
-      "dob": _dob.text,
-      "bloodGroup": _bloodGroup.text,
-      "loginType": "Flutter",
-      "password": pasword,
-      "address": _location.text,
-      "emergency Number": _emergencyNum.text,
-      "insuranceInformation": _insurance.text,
-      "emeregencyContactName": _emergencyName.text
-
+      'firstName': _firstName.text,
+      'lastName': _lastName.text,
+      'gender': gender,
+      'dob': _dob.text,
+      'bloodGroup': _bloodGroup.text,
+      'loginType': flutter,
+      'password': pasword,
+      'address': _location.text,
+      'emeregencyNumber': _emergencyNum.text,
+      'insuranceInformation': _insurance.text,
+      'emeregencyContactName': _emergencyName.text
     };
-    http.Response response = await http.post(APIURL, body: mapeddata);
+    print("JSON DATA: ${mapeddata}");
+    http.Response response = await http.post(APIURL, body: jsonEncode(mapeddata));
     var data = jsonDecode(response.body);
+    print("DATA: ${data}");
     var code = (data[0]['Code']);
-    print("code is:"+code);
-    if (code == 200) {
-      //Navigator.push(context, MaterialPageRoute(builder: (_) => SignupScreen()));
-    }
-    else {
-      final snackBar = SnackBar(
-        content: Text("Please Enter Valid Details"),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
+    print("code is: ${code}");
+    //if (code == 200)
+      //Navigator.push(context, MaterialPageRoute(builder: (_) => WelcomeScreen()));
   }
 }
 
