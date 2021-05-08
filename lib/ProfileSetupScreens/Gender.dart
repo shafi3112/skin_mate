@@ -29,8 +29,7 @@ class _CustomRadioState extends State<CustomRadio> {
         _backgroundImage = "assets/Profile_Images/unchecked.png";
       return _backgroundImage;
     }
-    return Card(
-        child: Container(
+    return Container(
           height: 95.0,
           width: 101.0,
           decoration: BoxDecoration(
@@ -38,9 +37,9 @@ class _CustomRadioState extends State<CustomRadio> {
             color: widget._gender.isSelected ? Color(0xFFB2BFB8) : Color(0xFFFFFFFF),
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(0.0),
-                topLeft:  Radius.circular(20.0),
+                topLeft:  Radius.circular(25.0),
                 bottomLeft: Radius.circular(0.0),
-                bottomRight: Radius.circular(20.0)
+                bottomRight: Radius.circular(25.0)
             ),
           ),
           child: Column(
@@ -79,6 +78,6 @@ class _CustomRadioState extends State<CustomRadio> {
               ),
             ],
           ),
-        ));
+        );
   }
 }

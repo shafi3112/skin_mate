@@ -173,7 +173,9 @@ class _SetProfileState extends State<SetProfile> {
               Container(
                 height: 110.0,
                 width: 335.0,
-                child: ListView.builder(
+                child: ListView. separated(
+                    separatorBuilder: (BuildContext context, int index)
+                    { return SizedBox(width: 10.0,); },
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     itemCount: genders.length,
@@ -587,9 +589,8 @@ class _SetProfileState extends State<SetProfile> {
     var data = jsonDecode(response.body);
     print("DATA: ${data}");
     var code = (data[0]['Code']);
-    print("code is: ${code}");
-    //if (code == 200)
-      //Navigator.push(context, MaterialPageRoute(builder: (_) => WelcomeScreen()));
+    if (code == 200)
+      Navigator.push(context, MaterialPageRoute(builder: (_) => WelcomeScreen()));
   }
 }
 
