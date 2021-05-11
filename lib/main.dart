@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skin_mate/AppointmentScreens/family_Setup_Profile/family_Members.dart';
 import 'package:skin_mate/Screens/WelcomeScreen.dart';
 
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: WelcomeScreen(),
+      home: family_Members(),
     );
   }
 }
